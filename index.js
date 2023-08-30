@@ -1,7 +1,7 @@
 // Importando Express
 const express = require("express");
 // Importando MongoDb
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 
 // Conexão URL
 // const url = "mongodb://localhost:27017";
@@ -58,38 +58,43 @@ async function main() {
   });
 
   //Read By Id -> [GET] /herois/:id
-  app.get("/herois/:id", function (req, res) {
+  app.get("/herois/:id", async function (req, res) {
     //Pegamos o parâmetro de rota ID
-    const id = req.params.id - 1;
+    const id = req.params.id;
 
-    //Peagmos a informação da lista
-    const item = lista[id];
+    //Pegamos a informação da collection
+    const item = await collection.findOne({
+      _id: new ObjectId(id),
+    });
 
     //Exibimos o item na pesquisa do endpoint
     res.send(item);
   });
 
   //Update -> [PUT] /herois/:id
-  app.put("/herois/:id", function (req, res) {
+  app.put("/herois/:id", async function (req, res) {
     //Pegamos o parâmetro de rota ID
-    const id = req.params.id - 1;
+    const id = req.params.id;
 
-    //Extrai o nome do body da Request (corpo da requisição)
-    const item = req.body.nome;
+    //Extrai o body da Request (corpo da requisição)
+    const item = req.body;
 
-    //Atualizamos a informação na lista de registro
-    lista[id] = item;
+    //Atualizamos a informação na collection de registro
+    await collection.updateOne(
+      { _id: new ObjectId(id)},
+      { $set: item},
+      );
 
-    res.send("Item editado com sucesso");
+    res.send(item);
   });
 
   //Delete -> [DELETE] /herois/:id
-  app.delete("/herois/:id", function (req, res) {
+  app.delete("/herois/:id", async function (req, res) {
     //Pegamos o parêmetro de rota Id
-    const id = req.params.id - 1;
+    const id = req.params.id;
 
-    //Excluir o item da lista
-    delete lista[id];
+    //Exclui o item da collection
+    await collection.deleteOne({ _id: new ObjectId(id)})
 
     res.send("Item excluído com sucesso!");
   });
