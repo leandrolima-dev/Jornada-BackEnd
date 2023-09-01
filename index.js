@@ -5,7 +5,10 @@ const { MongoClient, ObjectId } = require("mongodb");
 
 // Conexão URL
 // const url = "mongodb://localhost:27017";
-const url = "mongodb://127.0.0.1:27017";
+// const url = "mongodb://127.0.0.1:27017";
+
+// URL MongoDB Clound
+const url = "mongodb+srv://admin:18mon01go06db@cluster0.ckc9xh5.mongodb.net";
 const client = new MongoClient(url);
 // Database Name
 const dbName = "jornada-backend-agosto-23";
