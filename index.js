@@ -1,5 +1,13 @@
+// Importando .env
+require('dotenv').config()
+
+const dbHost = process.env.DB_HOST;
+const dbUser = process.env.DB_USER;
+const dbPassword = process.env.DB_PASSWORD;
+
 // Importando Express
 const express = require("express");
+
 // Importando MongoDb
 const { MongoClient, ObjectId } = require("mongodb");
 
@@ -8,10 +16,10 @@ const { MongoClient, ObjectId } = require("mongodb");
 // const url = "mongodb://127.0.0.1:27017";
 
 // URL MongoDB Clound
-const url = "mongodb+srv://admin:18mon01go06db@cluster0.ckc9xh5.mongodb.net";
+const url = `mongodb+srv://${dbUser}:${dbPassword}@cluster0.${dbHost}.mongodb.net`;
 const client = new MongoClient(url);
 // Database Name
-const dbName = "jornada-backend-agosto-23";
+const dbName = process.env.DB_NAME;
 
 async function main() {
   //Use o método connect para se conectar ao servidor
